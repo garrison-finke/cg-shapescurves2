@@ -52,19 +52,24 @@ class Renderer {
         // TODO: draw at least 2 Bezier curves
         //   - variable `this.num_curve_sections` should be used for `num_edges`
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
-        this.drawBezierCurve(
-            {x: 100, y: 100}, 
-            {x: 100, y: 200}, 
-            {x: 200, y: 200},
-            {x: 200, y: 100},
-            this.num_curve_sections,
-            [255, 0, 0, 255],
-            framebuffer
-        )
-        
+        let p00 = {x: 100, y: 100};
+        let p01 = {x: 100, y: 200};
+        let p02 = {x: 200, y: 200};
+        let p03 = {x: 200, y: 100};
+        let color0 = [255, 0, 0, 255];
+
+        let p10 = {x: 300, y: 300};
+        let p11 = {x: 300, y: 400};
+        let p12 = {x: 500, y: 500};
+        let p13 = {x: 500, y: 400};
+        let color1 = [0, 255, 0, 255];
+
+        this.drawBezierCurve(p00, p01, p02, p03, this.num_curve_sections, color0, framebuffer);
+        this.drawBezierCurve(p10, p11, p12, p13, this.num_curve_sections, color1, framebuffer);
+
         // Following line is example of drawing a single line
         // (this should be removed after you implement the curve)
-        this.drawLine({x: 100, y: 100}, {x: 600, y: 300}, [255, 0, 0, 255], framebuffer);
+        // this.drawLine({x: 100, y: 100}, {x: 600, y: 300}, [255, 0, 0, 255], framebuffer);
     }
 
     // framebuffer:  canvas ctx image data
