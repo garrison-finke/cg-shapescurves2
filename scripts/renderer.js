@@ -52,7 +52,15 @@ class Renderer {
         // TODO: draw at least 2 Bezier curves
         //   - variable `this.num_curve_sections` should be used for `num_edges`
         //   - variable `this.show_points` should be used to determine whether or not to render vertices
-        
+        this.drawBezierCurve(
+            {x: 100, y: 100}, 
+            {x: 100, y: 200}, 
+            {x: 200, y: 200},
+            {x: 200, y: 100},
+            this.num_curve_sections,
+            [255, 0, 0, 255],
+            framebuffer
+        )
         
         // Following line is example of drawing a single line
         // (this should be removed after you implement the curve)
@@ -100,8 +108,9 @@ class Renderer {
     // framebuffer:  canvas ctx image data
     drawBezierCurve(p0, p1, p2, p3, num_edges, color, framebuffer) {
         // TODO: draw a sequence of straight lines to approximate a Bezier curve
-        
-        
+        this.drawLine(p0, p1, color, framebuffer);
+        this.drawLine(p1, p2, color, framebuffer);
+        this.drawLine(p2, p3, color, framebuffer);
     }
 
     // center:       object {x: __, y: __}
