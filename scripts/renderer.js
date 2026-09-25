@@ -67,6 +67,17 @@ class Renderer {
         this.drawBezierCurve(p00, p01, p02, p03, this.num_curve_sections, color0, framebuffer);
         this.drawBezierCurve(p10, p11, p12, p13, this.num_curve_sections, color1, framebuffer);
 
+        if (this.showPoints) {
+            this.drawPoint(p00.x, p00.y, color0, framebuffer);
+            this.drawPoint(p01.x, p01.y, color0, framebuffer);
+            this.drawPoint(p02.x, p02.y, color0, framebuffer);
+            this.drawPoint(p03.x, p03.y, color0, framebuffer);
+            this.drawPoint(p10.x, p10.y, color1, framebuffer);
+            this.drawPoint(p11.x, p11.y, color1, framebuffer);
+            this.drawPoint(p12.x, p12.y, color1, framebuffer);
+            this.drawPoint(p13.x, p13.y, color1, framebuffer);
+        }
+
         // Following line is example of drawing a single line
         // (this should be removed after you implement the curve)
         // this.drawLine({x: 100, y: 100}, {x: 600, y: 300}, [255, 0, 0, 255], framebuffer);
@@ -113,9 +124,16 @@ class Renderer {
     // framebuffer:  canvas ctx image data
     drawBezierCurve(p0, p1, p2, p3, num_edges, color, framebuffer) {
         // TODO: draw a sequence of straight lines to approximate a Bezier curve
-        this.drawLine(p0, p1, color, framebuffer);
-        this.drawLine(p1, p2, color, framebuffer);
-        this.drawLine(p2, p3, color, framebuffer);
+        let t = 0.0;
+        let dt = 1.0 / num_edges;
+        while (t < 1.0) {
+            let x0 = (1 - t) ** 3 * p0.x + 3 * (1 - t) ** 2 * t * p1.x + 3 * (1 - t) * t ** 2 * p2.x + t ** 3 * p3.x;
+            let y0 = (1 - t) ** 3 * p0.y + 3 * (1 - t) ** 2 * t * p1.y + 3 * (1 - t) * t ** 2 * p2.y + t ** 3 * p3.y;
+            let x1 = (1 - (t + dt)) ** 3 * p0.x + 3 * (1 - (t + dt)) ** 2 * (t + dt) * p1.x + 3 * (1 - (t + dt)) * (t + dt) ** 2 * p2.x + (t + dt) ** 3 * p3.x;
+            let y1 = (1 - (t + dt)) ** 3 * p0.y + 3 * (1 - (t + dt)) ** 2 * (t + dt) * p1.y + 3 * (1 - (t + dt)) * (t + dt) ** 2 * p2.y + (t + dt) ** 3 * p3.y;
+            this.drawLine({x: x0, y: y0}, {x: x1, y: y1}, color, framebuffer);
+            t += dt;
+        }
     }
 
     // center:       object {x: __, y: __}
@@ -145,6 +163,14 @@ class Renderer {
         // TODO: draw some symbol (e.g. small rectangle, two lines forming an X, ...) centered at position `v`
         
         
+    }
+
+    drawPoint(x, y, color, framebuffer) {
+        let index = pixelIndex(x, y, framebuffer);
+        framebuffer[index] = color[0];
+        framebuffer[index + 1] = color[1];
+        framebuffer[index + 2] = color[2];
+        framebuffer[index + 3] = color[3];
     }
     
     /***************************************************************
